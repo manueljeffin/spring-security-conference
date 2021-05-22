@@ -30,11 +30,15 @@ public class ConferenceUserDetailsContextMapper implements UserDetailsContextMap
     public UserDetails mapUserFromContext(DirContextOperations dirContextOperations, String s, Collection<? extends GrantedAuthority> collection) {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
+        //Step 1: Build customer UserDetails object. Password is "fake",
+        // cos this is anyway after authentication and we don't want to be
+        // passing around password for other people to grab and hack our session
         final ConferenceUserDetails userDetails = new ConferenceUserDetails(
                 dirContextOperations.getStringAttribute("uid"),
                 "fake",
                 Collections.EMPTY_LIST);
 
+        //Step 2: Just decorating above build userDetails with corresponding "nickname" from db
         jdbcTemplate.queryForObject(loadUserByUsernameQuery, new RowMapper<ConferenceUserDetails>() {
 
             @Override

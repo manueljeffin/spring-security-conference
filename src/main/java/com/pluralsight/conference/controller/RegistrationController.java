@@ -20,7 +20,7 @@ public class RegistrationController {
     }
 
     @PostMapping("registration")
-    @Secured("ROLE_USER")
+    @Secured("ROLE_USER") //ROLE_ADMIN
     public String addRegistration(@Valid @ModelAttribute ("registration")
                                               Registration registration,
                                   BindingResult result,

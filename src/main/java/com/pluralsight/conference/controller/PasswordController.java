@@ -39,6 +39,7 @@ public class PasswordController {
         return "password";
     }
 
+    //NOTE: We will have only mail and username as input into the Password POJO
     @PostMapping("password")
     public String sendEmailToReset(@Valid @ModelAttribute("password")
                                            Password password,
@@ -47,6 +48,9 @@ public class PasswordController {
         //should verify valid email address
         //verify email from database
         //fire off an event to reset email
+
+
+        //NOTE: We will have only mail and username at this point into Password POJO
         eventPublisher.publishEvent(new OnPasswordResetEvent(password, "conference_war"));
         return "redirect:password?sent=true";
     }
@@ -60,10 +64,13 @@ public class PasswordController {
         return new ModelAndView("resetPassword", "password", password);
     }
 
+    //here we'll only have password and matchingPassword in Password POJO
     @PostMapping("passwordReset")
     public String saveNewPassword(@RequestParam("token") String token,
                                   @ModelAttribute("password") Password password) {
         //should match the password
+        //TECH_DEBT: To check if both passwords are matching :)
+
         //verify token
         ResetToken resetToken = passwordRepository.findByToken(token);
         if (resetToken.getExpiryDate().after(new Date())) {
@@ -73,5 +80,7 @@ public class PasswordController {
         } else {
             return "tokenExpired";
         }
+
+        //TECH DEBT => To delete token in reset_tokens table
     }
 }

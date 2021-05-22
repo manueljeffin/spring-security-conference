@@ -27,7 +27,7 @@ public class PasswordListener implements ApplicationListener<OnPasswordResetEven
     }
 
     private void resetPassword(OnPasswordResetEvent event) {
-        //create password token
+        //create token
         Password password = event.getPassword();
         String token = UUID.randomUUID().toString();
         passwordService.createResetToken(password, token);

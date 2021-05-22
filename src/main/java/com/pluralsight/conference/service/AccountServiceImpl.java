@@ -51,9 +51,10 @@ public class AccountServiceImpl implements AccountService {
                             authorities);
             accountRepository.createUserDetails(userDetails);
             accountRepository.createAuthorities(userDetails);
-            //delete from accounts
+            //So Both accounts and verification_tokens entry won't exist after confirmation
+            //delete from accounts table
             accountRepository.delete(account);
-            //delete from tokens
+            //delete from verification_tokens table
             accountRepository.deleteToken(token);
         }
     }
